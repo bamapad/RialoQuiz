@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIALO Quiz - Test Your Knowledge</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* App Background */
+        .app {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .app-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #6366f1, #8b5cf6);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #06b6d4, #3b82f6);
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #8b5cf6, #ec4899);
+            bottom: 20%;
+            left: 60%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -30px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+        }
+
+        .app-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .logo-accent {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-subtitle {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .subtitle-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .subtitle-text {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            line-height: 1.6;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .quiz-header {
+            margin-bottom: 2rem;
+        }
+
+        .quiz-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e2e8f0;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .score-display {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .score-number {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #3b82f6);
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 999px;
+        }
+
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .quiz-card.correct-card {
+            border-color: #22c55e;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+        }
+
+        .quiz-card.incorrect-card {
+            border-color: #ef4444;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+        }
+
+        .quiz-card-header {
+            padding: 2rem 2rem 1rem 2rem;
+        }
+
+        .quiz-question {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #f8fafc;
+            margin: 0;
+        }
+
+        .quiz-card-content {
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-option {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            min-height: 60px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .quiz-option:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .quiz-option.selected-option {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+        }
+
+        .quiz-option.correct-option {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #dcfce7;
+        }
+
+        .quiz-option.incorrect-option {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #fecaca;
+        }
+
+        .quiz-option.disabled-option {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .option-icon {
+            width: 20px;
+            height: 20px;
+            margin-left: auto;
+        }
+
+        .result-explanation {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .result-text {
+            font-weight: 600;
+        }
+
+        .explanation-text {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Final Score Styles */
+        .final-score-card {
+            text-align: center;
+        }
+
+        .final-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .trophy-icon {
+            font-size: 4rem;
+            color: #fbbf24;
+        }
+
+        .final-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .final-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .final-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .score-numbers {
+            font-size: 4rem;
+            font-weight: 700;
+        }
+
+        .final-score-number.excellent {
+            color: #22c55e;
+        }
+
+        .final-score-number.good {
+            color: #fbbf24;
+        }
+
+        .final-score-number.poor {
+            color: #ef4444;
+        }
+
+        .final-score-total {
+            color: #6b7280;
+        }
+
+        .final-percentage {
+            font-size: 1.25rem;
+            color: #e2e8f0;
+        }
+
+        .final-message {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .quiz-button {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .quiz-button:hover {
+            background: linear-gradient(135deg, #5b21b6, #7c3aed);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Footer Styles */
+        .footer {
+            padding: 2rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-link {
+            color: #94a3b8;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: #06b6d4;
+            background: rgba(6, 182, 212, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .x-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-attribution {
+            margin-top: 1rem;
+        }
+
+        .footer-attribution p {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .logo-text {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+            
+            .quiz-question {
+                font-size: 1.3rem;
+            }
+            
+            .quiz-option {
+                padding: 1rem;
+                min-height: 50px;
+            }
+            
+            .option-text {
+                font-size: 0.9rem;
+            }
+            
+            .quiz-card-header,
+            .quiz-card-content {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            
+            .footer-links {
+                max-width: 300px;
+            }
+            
+            .footer-text {
+                font-size: 1.3rem;
+            }
+            
+            .score-numbers {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-logo {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            
+            .quiz-option {
+                padding: 0.8rem;
+                gap: 0.8rem;
+            }
+            
+            .option-letter {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+            }
+            
+            .option-text {
+                font-size: 0.85rem;
+            }
+            
+            .quiz-card-header,
+            .quiz-card-content {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="app-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        
+        <div class="app-content">
+            <header class="header">
+                <div class="header-content">
+                    <div class="header-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h1 class="logo-text">
+                            RIALO <span class="logo-accent">Quiz</span>
+                        </h1>
+                    </div>
+                    
+                    <div class="header-subtitle">
+                        <div class="subtitle-header">
+                            <i class="fas fa-bolt"></i>
+                            <span>Test Your Knowledge</span>
+                        </div>
+                        <p class="subtitle-text">
+                            Challenge yourself with questions about the future of blockchain infrastructure
+                        </p>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div id="quiz-container" class="quiz-container">
+                    <!-- Quiz Header -->
+                    <div class="quiz-header">
+                        <div class="quiz-header-top">
+                            <div class="quiz-badge">
+                                <span id="question-counter">Question 1 of 15</span>
+                            </div>
+                            <div class="score-display">
+                                Score: <span id="score" class="score-number">0</span>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div id="progress-bar" class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Card -->
+                    <div id="quiz-card" class="quiz-card">
+                        <div class="quiz-card-header">
+                            <h2 id="question-text" class="quiz-question"></h2>
+                        </div>
+                        <div class="quiz-card-content">
+                            <div id="options-container" class="options-container">
+                                <!-- Options will be populated by JavaScript -->
+                            </div>
+                            
+                            <div id="result-explanation" class="result-explanation" style="display: none;">
+                                <div class="result-header">
+                                    <i id="result-icon" class="result-icon"></i>
+                                    <span id="result-text" class="result-text"></span>
+                                </div>
+                                <p id="explanation-text" class="explanation-text"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final Score Card -->
+                    <div id="final-score-card" class="quiz-card final-score-card" style="display: none;">
+                        <div class="quiz-card-header final-header">
+                            <div class="trophy-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <h2 class="final-title">Quiz Completed!</h2>
+                        </div>
+                        <div class="quiz-card-content final-content">
+                            <div class="final-score">
+                                <div class="score-numbers">
+                                    <span id="final-score" class="final-score-number">0</span>
+                                    <span class="final-score-total">/15</span>
+                                </div>
+                                <div id="final-percentage" class="final-percentage">0% Correct</div>
+                                <div id="final-message" class="final-message"></div>
+                            </div>
+                            
+                            <button id="reset-button" class="quiz-button">
+                                <i class="fas fa-redo-alt"></i>
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="https://x.com/solana9006" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="Follow solana9006 on X">
+                            <svg class="x-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        
+                        <div class="footer-center">
+                            <span class="footer-text">Railo X</span>
+                        </div>
+                        
+                        <a href="https://x.com/RialoHQ" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="Follow RialoHQ on X">
+                            <svg class="x-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <div class="footer-attribution">
+                        <p>Inspired by Rialo project built by Rialo community member</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Data
+        const quizQuestions = [
+            {
+                id: 1,
+                question: "What does the acronym RIALO stand for in the context of the project?",
+                options: [
+                    "Real-time Integrated Asset Ledger Optimization",
+                    "Rapid Interoperable Application Layer Orchestration",
+                    "Rialo Isn't A Layer One",
+                    "Resilient Infrastructure for Asset Liquidity Operations"
+                ],
+                correctAnswer: 2,
+                explanation: "Rialo positions itself beyond a traditional Layer 1, emphasizing a unified full-stack system for developers."
+            },
+            {
+                id: 2,
+                question: "Which venture capital firm led Subzero Labs' $20 million seed funding round for Rialo in August 2025?",
+                options: [
+                    "Paradigm",
+                    "a16z",
+                    "Pantera Capital",
+                    "Sequoia Capital"
+                ],
+                correctAnswer: 2,
+                explanation: "Pantera Capital led the round, with participation from Coinbase Ventures and others, to advance real-world blockchain applications."
+            },
+            {
+                id: 3,
+                question: "What is the primary design philosophy of Rialo?",
+                options: [
+                    "Focusing solely on gaming dApps",
+                    "Unifying first-order networks like oracles and bridges without middleware",
+                    "Centralized asset custody",
+                    "NFT-only marketplaces"
+                ],
+                correctAnswer: 1,
+                explanation: "Rialo integrates Layer 1 features, oracles, and bridges into a single state for seamless, emergent app development."
+            },
+            {
+                id: 4,
+                question: "How does Rialo enable real-world assets (RWAs) to respond to events?",
+                options: [
+                    "Through manual user triggers exclusively",
+                    "Batch processing every 24 hours",
+                    "Autonomous, event-driven automation in real-time",
+                    "Off-chain oracles only"
+                ],
+                correctAnswer: 2,
+                explanation: "On-chain assets in Rialo can listen and react instantly to events like supply chain disruptions or cancellations."
+            },
+            {
+                id: 5,
+                question: "What iPhone-related analogy does Rialo use for its unification approach?",
+                options: [
+                    "Combining camera and GPS to enable apps like Uber",
+                    "Assembling car parts for better speed",
+                    "Mixing recipe ingredients",
+                    "Building a puzzle from pieces"
+                ],
+                correctAnswer: 0,
+                explanation: "Just as the iPhone unified tools for higher-order apps, Rialo combines network primitives for premium developer experiences."
+            },
+            {
+                id: 6,
+                question: "What is the Apex Network in the Rialo ecosystem?",
+                options: [
+                    "A governance token layer",
+                    "An NFT platform",
+                    "A testing sidechain",
+                    "The mainnet for real-time data feeds with <100ms latency"
+                ],
+                correctAnswer: 3,
+                explanation: "Apex Network powers live, low-latency data for thousands of tickers, acting like an on-chain Bloomberg Terminal."
+            },
+            {
+                id: 7,
+                question: "Why doesn't Rialo require external keeper bots for DeFi operations?",
+                options: [
+                    "It uses centralized servers",
+                    "Tasks like auto-restaking are handled by in-protocol automation",
+                    "Third-party APIs are mandatory",
+                    "Bots are optional but recommended"
+                ],
+                correctAnswer: 1,
+                explanation: "Automation is built natively into the protocol, eliminating the need for external bots in collateral management and more."
+            },
+            {
+                id: 8,
+                question: "How does Rialo address issues in tokenized music royalties?",
+                options: [
+                    "By increasing intermediary fees",
+                    "Limiting to on-chain royalties",
+                    "Requiring manual reporting",
+                    "Enabling real-time, transparent payouts without fragmented middleware"
+                ],
+                correctAnswer: 3,
+                explanation: "Rialo removes opaque intermediaries, allowing instant, seamless royalty distribution for IP rights."
+            },
+            {
+                id: 9,
+                question: "What is the purpose of 'Shitnet' in Rialo's development?",
+                options: [
+                    "A token burning tool",
+                    "A community forum",
+                    "The production mainnet",
+                    "An internal network for experimental prototypes"
+                ],
+                correctAnswer: 3,
+                explanation: "Shitnet is Subzero Labs' space for reckless testing and 'try it, break it, ship it' innovation."
+            },
+            {
+                id: 10,
+                question: "How does Rialo aim to make Web3 infrastructure 'invisible' to end-users?",
+                options: [
+                    "By requiring desktop access only",
+                    "Using pop-up notifications",
+                    "Hiding all on-chain elements completely",
+                    "Native integration with everyday apps like texting"
+                ],
+                correctAnswer: 3,
+                explanation: "Rialo embeds real-world connectivity into the protocol, avoiding clunky UX for seamless experiences."
+            },
+            {
+                id: 11,
+                question: "What biological analogy illustrates Rialo's unification concept?",
+                options: [
+                    "Rivers merging into streams",
+                    "Bees constructing a hive",
+                    "Trees extending branches",
+                    "Billions of cells forming a brain"
+                ],
+                correctAnswer: 3,
+                explanation: "From isolated cells to a complex brain, Rialo turns siloed blockchain ideas into innovative, complete projects."
+            },
+            {
+                id: 12,
+                question: "For flight disruptions, what real-world use case does Rialo support?",
+                options: [
+                    "Third-party arbitration",
+                    "Delayed email notifications",
+                    "Manual refund processes",
+                    "Instant autonomous payouts from tokenized insurance"
+                ],
+                correctAnswer: 3,
+                explanation: "Tokenized insurance on Rialo triggers automatic payouts upon verified cancellations."
+            },
+            {
+                id: 13,
+                question: "What criteria qualify someone for the Rialo Club?",
+                options: [
+                    "Referring new users exclusively",
+                    "Completing a paid course",
+                    "Holding a minimum token amount",
+                    "High community engagement for early access"
+                ],
+                correctAnswer: 3,
+                explanation: "Engaged community members gain exclusive roles, product previews, and recognition in the Rialo Club."
+            },
+            {
+                id: 14,
+                question: "Why does Rialo critique existing 'generalized' L1 blockchains?",
+                options: [
+                    "They lack scalability",
+                    "They are too fast for security",
+                    "Like Nokia Symbian: programmable but app-poor due to restrictions",
+                    "They overemphasize security"
+                ],
+                correctAnswer: 2,
+                explanation: "Rialo seeks an 'iPhone moment' with full-stack unification for true application innovation."
+            },
+            {
+                id: 15,
+                question: "What smart contract architecture does Rialo use?",
+                options: [
+                    "EVM-compatible only",
+                    "WASM-based",
+                    "Bitcoin Script",
+                    "RISC-V"
+                ],
+                correctAnswer: 3,
+                explanation: "Rialo employs RISC-V smart contracts for efficient, internet-scale decentralized applications."
+            }
+        ];
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let selectedAnswer = null;
+        let showResult = false;
+        let userAnswers = [];
+        let isAnswering = false;
+        let quizCompleted = false;
+        let score = 0;
+
+        // DOM Elements
+        const questionCounter = document.getElementById('question-counter');
+        const scoreDisplay = document.getElementById('score');
+        const progressBar = document.getElementById('progress-bar');
+        const quizCard = document.getElementById('quiz-card');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const resultExplanation = document.getElementById('result-explanation');
+        const resultIcon = document.getElementById('result-icon');
+        const resultText = document.getElementById('result-text');
+        const explanationText = document.getElementById('explanation-text');
+        const finalScoreCard = document.getElementById('final-score-card');
+        const finalScore = document.getElementById('final-score');
+        const finalPercentage = document.getElementById('final-percentage');
+        const finalMessage = document.getElementById('final-message');
+        const resetButton = document.getElementById('reset-button');
+
+        // Initialize Quiz
+        function initializeQuiz() {
+            updateUI();
+        }
+
+        // Update UI
+        function updateUI() {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+            
+            // Update header
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+            scoreDisplay.textContent = score;
+            progressBar.style.width = `${progress}%`;
+            
+            // Update question
+            questionText.textContent = currentQuestion.question;
+            
+            // Clear options
+            optionsContainer.innerHTML = '';
+            
+            // Create options
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'quiz-option';
+                button.onclick = () => handleAnswerSelect(index);
+                
+                button.innerHTML = `
+                    <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+                    <span class="option-text">${option}</span>
+                `;
+                
+                optionsContainer.appendChild(button);
+            });
+            
+            // Hide result explanation
+            resultExplanation.style.display = 'none';
+            
+            // Reset card state
+            quizCard.className = 'quiz-card';
+        }
+
+        // Handle Answer Selection
+        function handleAnswerSelect(answerIndex) {
+            if (isAnswering) return;
+            
+            selectedAnswer = answerIndex;
+            showResult = true;
+            isAnswering = true;
+            
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+            
+            // Update option styles
+            const options = optionsContainer.children;
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                option.disabled = true;
+                
+                if (i === currentQuestion.correctAnswer) {
+                    option.classList.add('correct-option');
+                    option.innerHTML += '<i class="fas fa-check-circle option-icon" style="color: #22c55e;"></i>';
+                } else if (i === selectedAnswer && selectedAnswer !== currentQuestion.correctAnswer) {
+                    option.classList.add('incorrect-option');
+                    option.innerHTML += '<i class="fas fa-times-circle option-icon" style="color: #ef4444;"></i>';
+                } else {
+                    option.classList.add('disabled-option');
+                }
+            }
+            
+            // Update card style
+            if (isCorrect) {
+                quizCard.classList.add('correct-card');
+            } else {
+                quizCard.classList.add('incorrect-card');
+            }
+            
+            // Show result explanation
+            resultExplanation.style.display = 'block';
+            if (isCorrect) {
+                resultIcon.className = 'fas fa-check-circle result-icon';
+                resultIcon.style.color = '#22c55e';
+                resultText.textContent = 'Correct!';
+                resultText.style.color = '#22c55e';
+                resultExplanation.style.borderLeftColor = '#22c55e';
+            } else {
+                resultIcon.className = 'fas fa-times-circle result-icon';
+                resultIcon.style.color = '#ef4444';
+                resultText.textContent = 'Incorrect';
+                resultText.style.color = '#ef4444';
+                resultExplanation.style.borderLeftColor = '#ef4444';
+            }
+            explanationText.textContent = currentQuestion.explanation;
+            
+            // Auto advance after timeout
+            setTimeout(() => {
+                handleNextQuestion(isCorrect);
+            }, isCorrect ? 1500 : 2000);
+        }
+
+        // Handle Next Question
+        function handleNextQuestion(isCorrect) {
+            const newAnswer = {
+                questionId: quizQuestions[currentQuestionIndex].id,
+                selectedAnswer,
+                correctAnswer: quizQuestions[currentQuestionIndex].correctAnswer,
+                isCorrect
+            };
+            
+            userAnswers.push(newAnswer);
+            
+            if (isCorrect) {
+                score++;
+            }
+            
+            if (currentQuestionIndex + 1 < quizQuestions.length) {
+                currentQuestionIndex++;
+                selectedAnswer = null;
+                showResult = false;
+                isAnswering = false;
+                updateUI();
+            } else {
+                quizCompleted = true;
+                showFinalScore();
+            }
+        }
+
+        // Show Final Score
+        function showFinalScore() {
+            quizCard.style.display = 'none';
+            finalScoreCard.style.display = 'block';
+            
+            const percentage = Math.round((score / quizQuestions.length) * 100);
+            
+            finalScore.textContent = score;
+            finalPercentage.textContent = `${percentage}% Correct`;
+            
+            // Set score color
+            if (percentage >= 80) {
+                finalScore.className = 'final-score-number excellent';
+            } else if (percentage >= 60) {
+                finalScore.className = 'final-score-number good';
+            } else {
+                finalScore.className = 'final-score-number poor';
+            }
+            
+            // Set message
+            if (percentage >= 90) {
+                finalMessage.textContent = "Outstanding! You're a RIALO expert! 🏆";
+            } else if (percentage >= 80) {
+                finalMessage.textContent = "Excellent work! You know RIALO well! ⭐";
+            } else if (percentage >= 60) {
+                finalMessage.textContent = "Good job! Keep learning about RIALO! 👍";
+            } else {
+                finalMessage.textContent = "Keep studying! There's more to learn about RIALO! 📚";
+            }
+        }
+
+        // Reset Quiz
+        function resetQuiz() {
+            currentQuestionIndex = 0;
+            selectedAnswer = null;
+            showResult = false;
+            userAnswers = [];
+            isAnswering = false;
+            quizCompleted = false;
+            score = 0;
+            
+            finalScoreCard.style.display = 'none';
+            quizCard.style.display = 'block';
+            
+            updateUI();
+        }
+
+        // Event Listeners
+        resetButton.addEventListener('click', resetQuiz);
+
+        // Initialize the quiz when page loads
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+</html>
